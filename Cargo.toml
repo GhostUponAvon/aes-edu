@@ -7,3 +7,4 @@ description = "A collection of code for teaching the full AES algorith as descri
 documentation = "https://docs.rs/aes-edu/latest/aes_edu/index.html"
 keywords = ["aes", "encryption", "cipher", "education", "learn"]
 authors = ["GhostUponAvon"]
+repository = "https://github.com/GhostUponAvon/aes-edu"
