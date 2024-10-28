@@ -1,0 +1,6 @@
+[package]
+name = "aes-edu"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "A collection of code for teaching the full AES algorith as described in FIPS 197."
