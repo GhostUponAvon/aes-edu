@@ -1,8 +1,7 @@
 //! A crate for applying the AES algorithms individual steps. The crate has not be verified by a security professional and may contain mistakes, use at your own risk. The crate is
 //! as such intended to be used for educational purposes.
-
 /// This module contains functions specific to the actual algorithm (Mix Columns, Shift Rows, etc)
-pub mod aesfunctions {
+pub mod functions {
     
     /// This struct represents a block to be used in the AES Cipher.
     #[derive(Debug, Clone)]
@@ -30,7 +29,7 @@ pub mod aesfunctions {
         /// # Examples
         /// 
         /// ```
-        /// use aes_functions::aesfunctions::{Block, AES};
+        /// use aes_edu::functions::{Block, AES};
         /// 
         /// let mut block: Block = Block { id: 0, bytes: [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]};
         /// let key: Vec<u8> = vec![0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF];
@@ -51,7 +50,7 @@ pub mod aesfunctions {
         /// # Examples
         /// 
         /// ```
-        /// use aes_functions::aesfunctions::{Block, AES};
+        /// use aes_edu::functions::{Block, AES};
         /// 
         /// let mut block: Block = Block { id: 0, bytes: [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]};
         /// 
@@ -73,7 +72,7 @@ pub mod aesfunctions {
         /// # Examples
         /// 
         /// ```
-        /// use aes_functions::aesfunctions::{Block, AES};
+        /// use aes_edu::functions::{Block, AES};
         /// 
         /// let mut block: Block = Block { id: 0, bytes: [0x63, 0x63, 0x63, 0x63, 0x63, 0x63, 0x63, 0x63, 0x63, 0x63, 0x63, 0x63, 0x63, 0x63, 0x63, 0x63]};
         /// 
@@ -95,7 +94,7 @@ pub mod aesfunctions {
         /// # Examples
         /// 
         /// ```
-        /// use aes_functions::aesfunctions::{Block, AES};
+        /// use aes_edu::functions::{Block, AES};
         /// 
         /// let mut block: Block = Block { id: 0, bytes: [0x01, 0x01, 0x01, 0x01, 0x02, 0x02, 0x02, 0x02, 0x03, 0x03, 0x03, 0x03, 0x04, 0x04, 0x04, 0x04]};
         /// 
@@ -122,7 +121,7 @@ pub mod aesfunctions {
         /// # Examples
         /// 
         /// ```
-        /// use aes_functions::aesfunctions::{Block, AES};
+        /// use aes_edu::functions::{Block, AES};
         /// 
         /// let mut block: Block = Block { id: 0, bytes: [0x01, 0x02, 0x03, 0x04, 0x02, 0x03, 0x04, 0x01, 0x03, 0x04, 0x01, 0x02, 0x04, 0x01, 0x02, 0x03]};
         /// 
@@ -149,7 +148,7 @@ pub mod aesfunctions {
         /// # Examples
         /// 
         /// ```
-        /// use aes_functions::aesfunctions::{Block, AES};
+        /// use aes_edu::functions::{Block, AES};
         /// 
         /// let mut block: Block = Block { id: 0, bytes: [0xff, 0x65, 0xc7, 0xcc, 0xff, 0x65, 0xc7, 0xcc, 0xff, 0x65, 0xc7, 0xcc, 0xff, 0x65, 0xc7, 0xcc]};
         /// 
@@ -177,7 +176,7 @@ pub mod aesfunctions {
         /// # Examples
         /// 
         /// ```
-        /// use aes_functions::aesfunctions::{Block, AES};
+        /// use aes_edu::functions::{Block, AES};
         /// 
         /// let mut block: Block = Block { id: 0, bytes: [0x41, 0xAB, 0x40, 0x3B, 0x41, 0xAB, 0x40, 0x3B, 0x41, 0xAB, 0x40, 0x3B, 0x41, 0xAB, 0x40, 0x3B]};
         /// 
@@ -207,7 +206,7 @@ pub mod aesfunctions {
     /// # Examples
     /// 
     /// ```
-    /// use aes_functions::aesfunctions::g_mul;
+    /// use aes_edu::functions::g_mul;
     /// 
     /// let byte_a: u8 = 0x56;
     /// let byte_b: u8 = 0xAF;
@@ -237,7 +236,7 @@ pub mod aesfunctions {
     /// # Examples
     /// 
     /// ```
-    /// use aes_functions::aesfunctions::S_BOX;
+    /// use aes_edu::functions::S_BOX;
     /// 
     /// let byte: u8 = 0x00;
     /// 
@@ -270,7 +269,7 @@ pub mod aesfunctions {
     /// # Examples
     /// 
     /// ```
-    /// use aes_functions::aesfunctions::INV_S_BOX;
+    /// use aes_edu::functions::INV_S_BOX;
     /// 
     /// let substituted_byte: u8 = 0x63;
     /// 
@@ -297,4 +296,155 @@ pub mod aesfunctions {
         [0xa0, 0xe0, 0x3b, 0x4d, 0xae, 0x2a, 0xf5, 0xb0, 0xc8, 0xeb, 0xbb, 0x3c, 0x83, 0x53, 0x99, 0x61],
         [0x17, 0x2b, 0x04, 0x7e, 0xba, 0x77, 0xd6, 0x26, 0xe1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0c, 0x7d]];
             
+}
+
+pub mod key_gen {
+
+    use crate::functions::S_BOX;
+
+    #[derive(Debug, Clone)]
+    pub struct Key {
+        pub key: [u8;16]
+    }
+
+    /// A precomputed array containing the first 11 values for the Round Constant variable. More than 11 are not required to be able to cover AES 128, 192, and 256. <br>
+    /// A full table containing 256 values can be found at https://github.com/m3y54m/aes-in-c.
+    const RCON: [u8; 11] = [0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36, 0x6c];
+
+    /// This functions implements the AES-256 variant of the AES key schedule. <br>
+    /// The input is the 256-bit password to be used.
+    /// 
+    /// #Examples
+    /// 
+    /// ```
+    /// use aes_edu::key_gen::*;
+    /// 
+    /// let keys: Vec<Key> = generate_keys_256([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    /// 
+    /// assert_eq!(keys[4].key, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    /// ```
+    pub fn generate_keys_256(password: [u8; 32]) -> Vec<Key> {
+        let mut current_key: Vec<u8> = password.to_vec();
+    
+        let mut keys: Vec<Key> = Vec::new();
+        for k in 0..8 {
+            
+            // Push the latest key to the Vector holding all generated keys.
+            let left = Key { key: current_key[0..16].try_into().unwrap() };
+            let right = Key { key: current_key[16..32].try_into().unwrap() };
+            keys.push(left);keys.push(right);
+            
+            if keys.len() == 16 {
+                break;
+            }
+
+            // Break the key into 8 columns
+            let mut n_key: Vec<Vec<u8>> = current_key.chunks(4).map(|x| x.to_owned()).collect();
+            
+            // Do initial operations on the last word
+            n_key[0] = xor_word(&n_key[0], &rcon(sub_word(rot_word(n_key[7].clone())), k));
+    
+            // Then use loop to xor the rest
+            for i in 1..8 {
+                n_key[i] = xor_word(&n_key[i], &n_key[i-1]);
+            }
+            current_key = n_key.concat();
+            println!("{:?}", current_key);
+    
+    
+        }
+        
+        keys
+    }
+    
+    fn generate_keys_192(password_hash: String) -> Vec<Key> {
+        let mut current_key: Vec<u8> = password_hash.into_bytes();
+    
+        let mut keys: Vec<Vec<u8>> = Vec::new();
+        for k in 0..8 {
+            
+            let mut left = current_key.clone();
+            let right = left.split_off(16);
+            keys.push(left);keys.push(right);
+            
+            if keys.len() == 16 {
+                break;
+            }
+    
+            //break the key into 8 columns
+            let mut n_key: Vec<Vec<u8>> = current_key.chunks(8).map(|x| x.to_owned()).collect();
+            
+            //do initial xor
+            n_key[0] = xor_word(&n_key[0], &rcon(sub_word(rot_word(n_key[7].clone())), k));
+    
+            //then use loop to do the rest
+            for i in 1..8 {
+                n_key[i] = xor_word(&n_key[i], &n_key[i-1]);
+            }
+            current_key = n_key.concat();
+    
+    
+        }
+        todo!();
+        //keys
+    }
+    fn generate_keys_128(password_hash: String) -> Vec<Key> {
+        let mut current_key: Vec<u8> = password_hash.into_bytes();
+    
+        let mut keys: Vec<Vec<u8>> = Vec::new();
+        for k in 0..8 {
+            
+            let mut left = current_key.clone();
+            let right = left.split_off(16);
+            keys.push(left);keys.push(right);
+            
+            if keys.len() == 16 {
+                break;
+            }
+    
+            //break the key into 8 columns
+            let mut n_key: Vec<Vec<u8>> = current_key.chunks(8).map(|x| x.to_owned()).collect();
+            
+            //do initial xor
+            n_key[0] = xor_word(&n_key[0], &rcon(sub_word(rot_word(n_key[7].clone())), k));
+    
+            //then use loop to do the rest
+            for i in 1..8 {
+                n_key[i] = xor_word(&n_key[i], &n_key[i-1]);
+            }
+            current_key = n_key.concat();
+    
+    
+        }
+        todo!();
+        //keys
+    }
+    
+    fn rot_word(mut word: Vec<u8>) -> Vec<u8> {
+        word.rotate_left(1);
+        word
+    }
+    
+    fn sub_word(mut word: Vec<u8>) -> Vec<u8> {
+    
+        for byte in word.iter_mut() {
+            let nibble_a:usize = (*byte >> 4) as usize;
+            let nibble_b:usize = (*byte & 0x0f) as usize;
+            *byte = S_BOX[nibble_a][nibble_b].clone();
+        }
+        word
+    }
+    
+    fn rcon(word: Vec<u8>, iteration: usize) -> Vec<u8> {
+        xor_word(&word, &vec![RCON[iteration], 0x00, 0x00, 0x00])
+    }
+    
+    fn xor_word(a: &Vec<u8>, b: &Vec<u8>) -> Vec<u8> {
+        let mut xor_result: Vec<u8> = Vec::with_capacity(8);
+        for (c, d) in a.iter().zip(b) {
+            xor_result.push(c^d);
+        }
+        xor_result
+    }
+
 }
